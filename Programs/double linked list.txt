@@ -1,0 +1,125 @@
+#include<iostream>
+using namespace std;
+
+class node {
+ public:
+ int data;
+ node* next;
+ node* prev;
+};
+
+insert(node** head, int newvalue){
+   node* newnode = new node;
+   newnode->data = newvalue;
+  
+   newnode->next = (*head);
+   newnode->prev = NULL;
+
+   if ((*head) != NULL)
+   (*head)->prev = newnode;
+   (*head) = newnode;
+}
+
+display(node* nd) {
+    node* last;
+  
+   while (nd != NULL) {
+      cout<<nd->data<<"<==>";
+      last = nd;
+      nd = nd->next;
+   }
+   if(nd == NULL)
+   cout<<"NULL";
+}
+void remove(node **head, int rv){ 
+   if (*head == NULL) {
+    cout<<"List is Empty ";
+   } 
+    node* temp = *head; 
+    if (rv == 0){ 
+        *head = temp->next;   
+        free(temp);          
+        return; 
+    } 
+    for (int i=0; temp!=NULL && i<rv-1; i++) 
+         temp = temp->next; 
+         
+    if (temp == NULL || temp->next == NULL) 
+         return; 
+         
+    node *next = temp->next->next; 
+    free(temp->next); 
+    
+    temp->next = next; 
+} 
+
+bool search(node** head,int sv){
+ node* current = *head;
+ while(current!= NULL){
+  if(current->data==sv){
+   return cout<<"Value is Present in List\n";
+   current=current->next;
+  }else{
+   return cout<<"Value is not in Linked List\n";
+  }
+ }
+}
+
+sizeoflist(node** head){
+ int count=0;
+ node* current=*head;
+ while(current!=NULL){
+  count++;
+  current=current->next;
+ }
+ cout<<"Total Length of List: "<<count<<"\n\n";
+}
+  
+int main() {
+    int chic,val,nval,dval,sval;
+    node* head = NULL;
+    cout<<"\n-->******Double Linked List******<--\n";
+    cout<<"-->Insert data in list<--\n";
+ cout<<"\nHow many values you want to Enter in List ? ";
+    cin>>val;
+    for(int z=1; z<=val; z++){
+    cout<<"Enter a Value you want to set a new node: ";
+    cin>>nval;
+    insert(&head, nval);
+    cout<<endl;
+ display(head); 
+ cout<<endl;
+ }
+
+ cout<<"\n\n1-->View data in List\n";
+    cout<<"2-->Remove an Element from List\n";
+    cout<<"3-->Search an Element from List\n";
+    cout<<"4-->Size of List\n";
+    cin>>chic;
+    switch(chic){
+     case 1:
+      cout<<"Data in List is:  ";
+         display(head);
+         break;
+     case 2:
+      display(head);
+   cout<<"\n\n\tWhic Value You want to delete(Enter Index) ? ";
+   cin>>dval ;
+   cout<<"List After Removing Value at Index "<<dval<<"\n\n";
+   remove(&head,dval);
+   display(head);
+      break;
+     case 3:
+      display(head);
+         cout<<"\n\n\tWhic Value You want to Search ? ";
+         cin>>sval ;
+         return search(&head,sval);
+      break;
+        case 4:
+         sizeoflist(&head);
+         break;
+        default:
+         cout<<"Invalid Choice"<<endl;
+     return 0;
+}
+}

@@ -1,0 +1,194 @@
+Circular Link List with one Additional Function named as [sizeoflist();]
+
+#include<iostream>
+using namespace std;
+class node{
+ public:
+    int info;
+    node *next;
+    node *prev;
+}
+*start, *last;
+int counter = 0;
+
+class double_clist
+{
+    public:
+        node *create_node(int);
+        void insert();
+        void remove();
+        void search();
+        void display();
+        void sizeoflist();
+        double_clist()
+        {
+            start = NULL;
+            last = NULL;   
+        }
+};
+
+node* create_node(int value)
+{
+    counter++;
+  node *temp;
+    temp = (new node);
+    temp->info = value;
+    temp->next = NULL;
+    temp->prev = NULL;
+    return temp;
+}
+insert(int newvalue)
+{
+     node *temp;
+    temp = create_node(newvalue);
+    if (start == last && start == NULL)
+    { 
+        cout<<"Element inserted in empty list"<<endl;
+        start = last = temp;
+        start->next = last->next = NULL;
+        start->prev = last->prev = NULL;
+    }
+    else
+    {
+        temp->next = start;
+        start->prev = temp;
+        start = temp;
+        start->prev = last;
+        last->next = start;
+        cout<<"Element inserted"<<endl;
+    }
+}
+
+void double_clist::remove()
+{ 
+    int pos, i;
+    node *ptr, *s;
+    if (start == last && start == NULL)
+    {
+        cout<<"List is empty, nothing to delete"<<endl;
+        return;
+    }
+    cout<<endl<<"Enter the postion of element to be deleted: ";
+    cin>>pos;
+    if (counter < pos)
+    {
+        cout<<"Position out of range"<<endl;
+        return;
+    }
+    s = start;
+    if(pos == 1)
+    {
+        counter--;
+        last->next = s->next;
+        s->next->prev = last;
+        start = s->next;
+        free(s);
+        cout<<"Element Removed"<<endl;
+        cout<<"After Removing Element"<<endl;
+        display();  
+    }
+    for (i = 0;i < pos - 1;i++ )
+    {
+        s = s->next;
+        ptr = s->prev;     
+    } 
+    ptr->next = s->next;
+    s->next->prev = ptr;
+    if (pos == counter)
+    {
+        last = ptr;   
+    }
+    counter--;
+    free(s);
+    cout<<"Element Removed"<<endl;
+    cout<<"After Removing "<<pos<<". List is as Following"<<endl;
+    display();
+}
+
+void double_clist::search()
+{
+    int pos = 0, value, i;
+    bool flag = false;
+     node *s;
+    if (start == last && start == NULL)
+    {
+        cout<<"The List is empty, nothing to search"<<endl;
+        return;
+    }
+    cout<<endl<<"Enter the value to be searched: ";
+    cin>>value;
+    s = start;
+    for (i = 0;i < counter;i++)
+    {
+        pos++;
+        if (s->info == value)
+        {
+            cout<<"Element "<<value<<" found at position: "<<pos<<endl;
+            flag = true;
+        } 
+        s = s->next;
+    }
+    if (!flag)
+        cout<<"Element not found in the list"<<endl; 
+}
+
+void double_clist::display()
+{
+    int i;
+    struct node *s;
+    if (start == last && start == NULL)
+    {
+        cout<<"The List is empty, nothing to display"<<endl;
+        return;
+    }
+    s = start;
+    for (i = 0;i < counter-1;i++)
+    { 
+        cout<<s->info<<"<=>";
+        s = s->next;
+    }
+    cout<<s->info<<endl;
+}
+
+void double_clist::sizeoflist(){
+ cout<<"Total Length of List: "<<counter<<"\n\n";
+}
+
+int main()
+{
+    int choice,val,nval;
+    double_clist cdl;
+
+        cout<<"\n-->******Operations on Doubly Circular linked list******<--"<<endl;
+        cout<<"-->Insert Data in DCL List<--"<<endl;
+        cout<<"\nHow many values you want to Enter in List ? ";
+        cin>>val;
+        for(int z=1; z<=val; z++){
+        cout<<"Enter a Value you want to set a new node: ";
+        cin>>nval;
+        insert(nval);
+        cout<<endl;
+     cdl.display(); 
+     cout<<endl;
+ }
+        cout<<"1-->Remove Element"<<endl;
+        cout<<"2-->Search Element"<<endl;
+        cout<<"3-->Length of List"<<endl;
+        cout<<"Enter your choice : ";
+        cin>>choice;
+ 
+        switch(choice){
+        case 1:
+            cdl.remove();
+            break;
+        case 2:
+            cdl.search();
+            break;
+        case 3:
+            cdl.sizeoflist();
+            break;
+        default:
+            cout<<"Invalid choice"<<endl; 
+        }
+    return 0;
+}
